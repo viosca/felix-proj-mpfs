@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>felix-proj-mpfs</name>
+	<comment>Portable Umbrella Project for Felix OS</comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.cdt.managedbuilder.core.genmakebuilder</name>
+			<triggers>clean,full,incremental,</triggers>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.cdt.managedbuilder.core.ScannerConfigBuilder</name>
+			<triggers>full,incremental,</triggers>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.cdt.core.cnature</nature>
+		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
+		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>src/platform</name>
+			<type>2</type>
+			<location>PROJECT_LOC/mpfs-platform</location>
+		</link>
+		<link>
+			<name>src/middleware/felix</name>
+			<type>2</type>
+			<locationURI>PROJECT_LOC/felix</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>

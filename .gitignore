@@ -1,0 +1,14 @@
+# 1. Ignore EVERYTHING in the wrapper project first
+*
+
+# 2. Un-ignore (keep) these specific configuration files
+!/.project
+!/.cproject
+!/.gitignore
+!/.gitmodules
+!/README.md
+!/LICENSE.md
+
+# 3. Un-ignore (keep) the submodule gitlinks
+!/felix/
+!/mpfs-platform/
