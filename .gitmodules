@@ -1,0 +1,6 @@
+[submodule "felix"]
+	path = felix
+	url = https://github.com/viosca/felix.git
+[submodule "mpfs-platform"]
+	path = mpfs-platform
+	url = https://github.com/polarfire-soc/platform.git
