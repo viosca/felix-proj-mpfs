@@ -27,7 +27,7 @@
 		<link>
 			<name>src/platform</name>
 			<type>2</type>
-			<location>PROJECT_LOC/mpfs-platform</location>
+			<locationURI>PROJECT_LOC/mpfs-platform</locationURI>
 		</link>
 		<link>
 			<name>src/middleware/felix</name>
