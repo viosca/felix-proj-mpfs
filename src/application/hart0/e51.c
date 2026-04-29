@@ -11,7 +11,7 @@
 #include <string.h>
 #include "mpfs_hal/mss_hal.h"
 #include "drivers/mss/mss_mmuart/mss_uart.h"
-#include "inc/uart_mapping.h"
+//#include "inc/uart_mapping.h"
 
 volatile uint32_t count_sw_ints_h0 = 0U;
 

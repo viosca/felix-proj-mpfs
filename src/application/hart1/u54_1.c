@@ -4,7 +4,7 @@
 #include <stdlib.h> // For free()
 #include <errno.h>
 #include <felix.h>
-#include <fs/rootfs/dev/flx_fs_dev.h.bak>
+#include "fs/rootfs/dev/flx_fs_dev.h"
 #include "mpfs_hal/mss_hal.h"
 #include "drivers/mss/mss_mmuart/mss_uart.h"
 #include "mss_serial_port.h"
