@@ -1,15 +1,29 @@
-# 1. Ignore EVERYTHING in the wrapper project first
-*
+# 1. Ignore EVERYTHING in the root directory first
+/*
 
 # 2. Un-ignore (keep) these specific configuration files
 !/.project
 !/.cproject
 !/.gitignore
 !/.gitmodules
-!/src
+!/src/
 !/README.md
 !/LICENSE.md
 
 # 3. Un-ignore (keep) the submodule gitlinks
 !/felix/
 !/mpfs-platform/
+
+# 4. TRACK the Microchip Boot Code & Board Init (The "Glue")
+!/src/application/
+!/src/boards/
+
+# 4b. IGNORING UNUSED BOARDS
+# Ignore everything inside boards/ first
+#/src/boards/*
+# Then explicitly un-ignore ONLY the discovery kit
+#!/src/boards/mpfs-discovery-kit/
+
+# 5. KEEP middleware empty (allow ONLY .gitkeep for the Eclipse links)
+/src/middleware/*
+!/src/middleware/.gitkeep
