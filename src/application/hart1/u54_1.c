@@ -24,6 +24,7 @@ volatile uint32_t count_sw_ints_h1 = 0U;
 #include "kernel/blk_manager.h" /* Make sure this is included at the top */
 #include "kernel/sched.h"
 #include "kernel/process.h"
+#include <sys/utsname.h>
 
 /* Hardware-specific polling transmission for early boot logs */
 static void mss_early_putc(char c) {
@@ -87,10 +88,7 @@ void test_memory_wrappers(void) {
 
     kprintf("--- MEMORY DIAGNOSTICS COMPLETE ---\n\n");
 }
-static void init_task(void *arg) {
-    (void)arg;
-    kprintf("\r\n[Kernel] init_task called!\r\n");
-
+static int board_init(void) {
     int status;
 
     /* Boot the VFS and OS Subsystems */
@@ -118,11 +116,16 @@ static void init_task(void *arg) {
     if (felix_console_bind("/dev/console") != 0) {
         kprintf("\r\n[Kernel] FATAL: Failed to bind /dev/console! VFS Node missing!\r\n");
     }
+    return status;
+}
+static void init_task(void *arg) {
+    (void)arg;
+    kprintf("\r\n[Kernel] init_task called!\r\n");
 
-    kprintf("[Kernel] Initializing Block Manager...\n");
+    int status = board_init();
+
+#if 1
     flx_blk_manager_init();
-
-#if 0
     /* Spawn the background daemon to handle SD card hotplugging */
     void *blk_handle = NULL;
     status = sched_thread_create(&blk_handle, "BlkDaemon", 16384, 3, blk_manager_daemon_task, NULL);
@@ -133,14 +136,24 @@ static void init_task(void *arg) {
 
     printf("\n[Kernel] FreeRTOS Engine is ticking. Entering Shell...\n");
 
+#if 0
+    while (1) {
+        printf("Enter a char: ");
+        putchar(getchar());
+        printf("\n");
+    }
+#else
     //test_memory_wrappers();
     /* Launch User Space */
     status = flx_sh_main(0, NULL);
 
+#endif
+
+
     kprintf("\r\n[Kernel] flx_sh_main returned. This should not happen. Status: %d\r\n", status);
 
     /* Teardown if it exits */
-    flx_proc_exit();
+    flx_proc_exit(0);
 }
 
 void u54_1(void)
@@ -161,12 +174,21 @@ void u54_1(void)
     /* Awake! Clear the SW interrupt manually before enabling global IRQs. */
     clear_soft_interrupt();
 
+#if 0
     /* Enable External (PLIC) and Software Interrupts, then turn on Global IRQs. */
     clear_csr(mie, MIP_MEIP);
     set_csr(mie, MIP_MSIP);
     set_csr(mie, MIP_MSIP | MIP_MEIP);
-    __enable_irq();
+#endif
 
+#if 0
+
+    unsigned long mstatus_val = read_csr(mstatus);
+    mstatus_val |= (1 << 13);
+    set_csr(mstatus, mstatus_val);
+
+    //__enable_irq();
+#endif
     felix_earlycon();
 
     kprintf("[Kernel] After Earlycon\n");
@@ -175,7 +197,8 @@ void u54_1(void)
      * RTOS HANDOFF
      * ========================================================= */
 
-#if 1
+#if 0
+    flx_blk_manager_init();
     /* Spawn the background daemon to handle SD card hotplugging */
     void *blk_handle = NULL;
     int status = sched_thread_create(&blk_handle, "BlkDaemon", 16384, 3, blk_manager_daemon_task, NULL);
@@ -184,6 +207,7 @@ void u54_1(void)
     }
 #endif
 
+#if 1
     /* Spawn the primary OS Init Task */
     void *shell_handle = NULL;
     sched_thread_create(&shell_handle, "InitShell", 32768, 2, init_task, NULL);
@@ -198,7 +222,14 @@ void u54_1(void)
     if (active_scheduler && active_scheduler->start) {
         active_scheduler->start();
     }
-
+#else
+    board_init();
+    while (1) {
+        printf("Enter a char: ");
+        putchar(getchar());
+        printf("\n");
+    }
+#endif
 
     /* Fallback trap if the shell ever exits */
     while (1) {
